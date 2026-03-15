@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/command/command_center_page.dart';
 import '../../features/auth/login_page.dart';
 import '../../features/home/home_page.dart';
 import '../../features/listing/listing_detail_page.dart';
+import '../../features/trades/trades_page.dart';
 import '../../features/wishlist/wishlist_page.dart';
 import '../providers/auth_provider.dart';
 import '../providers/workflow_provider.dart';
@@ -41,8 +43,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/trades',
-        builder: (context, state) =>
-            const _PlaceholderPage(title: 'Trades', route: '/trades'),
+        builder: (context, state) => TradesPage(
+          workflowController: ref.read(workflowControllerProvider),
+        ),
+      ),
+      GoRoute(
+        path: '/command/:tradeId',
+        builder: (context, state) => CommandCenterPage(
+          tradeId: state.pathParameters['tradeId']!,
+          workflowController: ref.read(workflowControllerProvider),
+        ),
       ),
       GoRoute(
         path: '/profile',
